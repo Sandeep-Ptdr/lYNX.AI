@@ -7,7 +7,7 @@ export async function POST(req) {
 
     try {
         const {question,id,mode} = await req.json()
-        console.log('modeee',mode)
+        // console.log('modeee',mode)
         if(!question || !id){
             return NextResponse.json({success:false,message:"Missing required fields"},{status:400});
         }

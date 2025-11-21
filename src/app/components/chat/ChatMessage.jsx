@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import rehypeHighlight from "rehype-highlight";
+import CopyBtn from "./CopyBtn";
 // Optional (only if you trust content & want HTML in markdown):
 // import rehypeRaw from "rehype-raw";
 // import rehypeSanitize from "rehype-sanitize";
@@ -125,13 +126,7 @@ function normalizeContent(raw = "") {
   return content;
 }
 
-/**
- * ChatMessage
- * - role: "user" | "assistant"
- * - content: string (Markdown)
- *
- * NOTE: I preserved your CSS & layout exactly. Only the content is preprocessed.
- */
+ 
 export default function ChatMessage({ role = "assistant", content = "" }) {
   const normalized = normalizeContent(content);
 // { console.log(normalized); }
@@ -165,6 +160,7 @@ export default function ChatMessage({ role = "assistant", content = "" }) {
             : "mr-auto bg-gradient-to-br from-gray-800/70 to-gray-700/60 text-gray-100 p-3"
         }`}
       >
+        
         <ReactMarkdown
           // Plugins
           remarkPlugins={[remarkGfm, remarkBreaks]}
@@ -176,25 +172,7 @@ export default function ChatMessage({ role = "assistant", content = "" }) {
             h2: ({ node, ...props }) => (
               <h2 className="text-base font-semibold my-1" {...props} />
             ),
-            code({ inline, className, children, ...props }) {
-              if (inline) {
-                return (
-                  <code
-                    className="px-1 py-[0.15rem] rounded bg-gray-900 text-yellow-200 text-sm"
-                    {...props}
-                  >
-                    {children}
-                  </code>
-                );
-              } 
-              return (
-                <pre className="bg-[#0B1220] rounded-md p-3  my-3 text-sm overflow-x-auto  scrollbar-hide">
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                </pre>
-              );
-            },
+              code: (props) => <CopyBtn {...props} />,
             p: ({ node, ...props }) => (
               <p className="text-sm leading-relaxed my-1" {...props} />
             ),
@@ -219,3 +197,7 @@ export default function ChatMessage({ role = "assistant", content = "" }) {
     </div>
   );
 }
+
+
+
+

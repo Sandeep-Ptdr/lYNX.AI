@@ -1,7 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { AppSidebar } from "./components/Sidebar";
 import { ModeProvider } from "@/context/modeContext";
 
 const geistSans = Geist({
@@ -22,19 +20,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ModeProvider>
-          <main>
-
-             <SidebarProvider>
-              <AppSidebar/>
-               <SidebarTrigger />
-        {children}
-
-           </SidebarProvider>
-          </main>
+          {children}
         </ModeProvider>
       </body>
     </html>
