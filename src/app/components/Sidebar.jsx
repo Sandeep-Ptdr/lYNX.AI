@@ -1,4 +1,15 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+"use client";
+
+import { useSession } from "next-auth/react";
+import {
+  User2,
+  ChevronUp,
+  Calendar,
+  Home,
+  Inbox,
+  Search,
+  Settings,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -10,39 +21,31 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import LogoutBtn from "./LogoutBtn"
+} from "@/components/ui/sidebar";
 
-// Menu items.
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import LogoutBtn from "./LogoutBtn";
+
+// Menu items
 const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-]
+  { title: "Home", url: "#", icon: Home },
+  { title: "Inbox", url: "#", icon: Inbox },
+  { title: "Calendar", url: "#", icon: Calendar },
+  { title: "Search", url: "#", icon: Search },
+  { title: "Settings", url: "#", icon: Settings },
+];
 
 export function AppSidebar() {
+  const { data: session } = useSession();
+
+  const username = session?.user?.name || "User";
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -64,9 +67,32 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      {/*USER PROFILE DROPDOWN*/}
       <SidebarFooter>
-              <LogoutBtn/>
-        </SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton>
+                  <User2 />
+                  {username}
+                  <ChevronUp className="ml-auto" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent
+                side="top"
+                className="w-[--radix-popper-anchor-width] rounded-[6px]"
+              >
+                <DropdownMenuItem>
+                  <LogoutBtn />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
-  )
+  );
 }
