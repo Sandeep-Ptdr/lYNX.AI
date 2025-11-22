@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
@@ -78,7 +78,7 @@ const router = useRouter()
 
   return (
     <>
-      <Toaster />
+      
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
         <Card className="w-md max-w-[500px] max-h-md h-max rounded">
           <CardHeader>

@@ -1,23 +1,26 @@
 "use client";
 
 import { Send } from "lucide-react";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useChatBot } from "@/hooks/useChat";
 
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { ButtonGroupDemo } from "../../components/GroupBtn";
 import { useMode } from "@/context/modeContext";
 import ChatMessage from "../../components/chat/ChatMessage";
-
+import { useSession } from "next-auth/react";
 
 const ChatPage = () => {
   const { mode } = useMode();
-  //  console.log(mode.mode,'ekend')
+  const session = useSession();
+
+  console.log(session, "ekend");
   const [messageInput, setMessageInput] = useState({
     role: "user",
     query: "",
   });
+  // if(!session?.data?.user) return <h1>Unauthorized</h1>
 
   const [messages, setMessages] = useState([]);
   // console.log('messages',messages)
@@ -67,17 +70,16 @@ const ChatPage = () => {
 
   return (
     <div className="w-full mx-auto container lg:px-40 h-screen flex flex-col justify-between relative bg-[#020618] text-white">
-      <Toaster />
       <div className="flex-1 p-4 overflow-y-auto scrollbar-hide">
-      {
-        messages.length === 0 && (
-            <div className="w-full flex justify-center items-center h-full">
-              <div className=" p-4 rounded-2xl text-center text-5xl max-w-3xl text-white opacity-80">
-                Hello! How can I help you today?
-              </div>
+        {messages.length === 0 && (
+          <div className="w-full flex justify-center items-center h-full">
+           
+
+            <div className=" p-4 rounded-2xl text-center text-5xl max-w-3xl text-white opacity-80">
+              Hello! How can I help you today?
             </div>
-        )
-      }
+          </div>
+        )}
         {messages.length > 1 &&
           messages.map((message, index) => (
             <ChatMessage

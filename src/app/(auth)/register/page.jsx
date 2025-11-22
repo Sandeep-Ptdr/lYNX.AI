@@ -17,7 +17,7 @@ import { useApi } from "@/hooks/useFetch";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
   const [user, setUser] = useState({
@@ -94,7 +94,7 @@ const SignUp = () => {
 
   return (
     <>
-      <Toaster />
+      
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
         <Card className="w-md max-w-[500px] max-h-md h-max rounded">
           <CardHeader>
