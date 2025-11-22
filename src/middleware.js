@@ -12,8 +12,8 @@ export function middleware(request) {
   const token =
     request.cookies.get("next-auth.session-token")?.value ||
     request.cookies.get("__Secure-next-auth.session-token")?.value;
-    console.log('token',token)
-
+    // console.log('token---',token)
+  
   // If user is logged in and tries to access login/register → redirect to home
   if (isPublic && token) {
     return NextResponse.redirect(new URL("/", request.url));
