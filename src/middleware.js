@@ -29,8 +29,8 @@ export function middleware(request) {
 
 export const config = {
   matcher: [
-    "/xyz",
-    "/xyz/:path*",   
+    "/chat/new",
+    "/chat/:path*",   
     '/login',
     '/register',
   ],
