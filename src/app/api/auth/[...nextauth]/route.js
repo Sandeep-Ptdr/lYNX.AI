@@ -1,15 +1,10 @@
-
-
-
-import clientPromise from "@/lib/mongodb";
-import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import User from "@/app/api/models/user";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
+import { connectDb } from "@/lib/connectDb";
 
 export const authOptions = {
-  adapter: MongoDBAdapter(clientPromise),
-
   session: {
     strategy: "jwt",
   },
@@ -19,23 +14,19 @@ export const authOptions = {
       credentials: {},
 
       async authorize(credentials) {
+        await connectDb();
 
-       
-        const client = await clientPromise;
-        const db = client.db();
+        const user = await User.findOne({ email: credentials.email });
+        // const usersCollection = db.collection("users");
 
-        
-        const usersCollection = db.collection("users");
-
-         
-        const user = await usersCollection.findOne({
-          email: credentials.email,
-        });
+        // const user = await usersCollection.findOne({
+        //   email: credentials.email,
+        // });
 
         if (!user) {
           throw new Error("User not found!");
         }
- 
+
         const isMatch = await bcrypt.compare(
           credentials.password,
           user.password
@@ -45,7 +36,6 @@ export const authOptions = {
           throw new Error("Invalid credentials");
         }
 
-         
         return {
           id: user._id.toString(),
           name: user.name,
@@ -76,6 +66,7 @@ export const authOptions = {
     signIn: "/login",
   },
 };
+
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
