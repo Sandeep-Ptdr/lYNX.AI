@@ -18,14 +18,12 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
-
-   
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
-const router = useRouter()
+  const router = useRouter();
   const onChange = (e) => {
     const { name, value } = e.target;
     setUser({
@@ -39,19 +37,19 @@ const router = useRouter()
 
     const toastId = toast.loading("Loading...", {
       style: {
-          background: "rgba(12, 18, 40, 0.6)", 
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
-          borderRadius: "12px",
-          border: "1px solid rgba(0, 102, 255, 0.35)",
-          boxShadow: "0 0 25px rgba(0, 102, 255, 0.20)",
-          color: "#E3ECFF",  
-          padding: "14px 18px",
-        },
-        iconTheme: {
-          primary: "#3B82F6",
-          secondary: "rgba(12,18,40,0.9)",
-        },
+        background: "rgba(12, 18, 40, 0.6)",
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
+        borderRadius: "12px",
+        border: "1px solid rgba(0, 102, 255, 0.35)",
+        boxShadow: "0 0 25px rgba(0, 102, 255, 0.20)",
+        color: "#E3ECFF",
+        padding: "14px 18px",
+      },
+      iconTheme: {
+        primary: "#3B82F6",
+        secondary: "rgba(12,18,40,0.9)",
+      },
     });
 
     setLoading(true);
@@ -61,6 +59,20 @@ const router = useRouter()
     if (res?.error) {
       toast.error(res.error, {
         id: toastId,
+        style: {
+          background: "rgba(12, 18, 40, 0.6)",
+          backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)",
+          borderRadius: "12px",
+          border: "1px solid rgba(255, 0, 0, 0.35)",
+          boxShadow: "0 0 25px rgba(255, 0, 0, 0.45)", // RED SHADOW
+          color: "#E3ECFF",
+          padding: "14px 18px",
+        },
+        iconTheme: {
+          primary: "#EF4444", // red icon
+          secondary: "rgba(12,18,40,0.9)",
+        },
       });
       return;
     }
@@ -68,9 +80,8 @@ const router = useRouter()
       toast.success("Login successful", {
         id: toastId,
       });
-      
-      router.push('/xyz')
 
+      router.push("/chat/new");
     }
 
     // console.log('user credentials',res)
@@ -78,7 +89,6 @@ const router = useRouter()
 
   return (
     <>
-      
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
         <Card className="w-md max-w-[500px] max-h-md h-max rounded">
           <CardHeader>
