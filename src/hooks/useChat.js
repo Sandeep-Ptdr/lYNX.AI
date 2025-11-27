@@ -65,7 +65,6 @@
 
 "use client";
 
-
  
 import { useRouter } from "next/navigation";
 import useSWR, { mutate } from "swr";
@@ -83,7 +82,14 @@ const router = useRouter();
     fetcher
   );
 
+
+  const {data:convData, error:convError, isLoading:convLoading,mutate:mutateConversations} = useSWR(
+    '/api/chatHistory',
+    fetcher
+  );
+
   const messages = data?.messages || [];
+  const conversations = convData?.conversations || [];
 
    
 const sendMessage = async (question, mode, userId) => {
@@ -108,6 +114,7 @@ const sendMessage = async (question, mode, userId) => {
     if (isNew && result.conversationId) {
       router.push(`/chat/${result.conversationId}`);
       mutate(`/api/chat/${result.conversationId}`);
+      mutateConversations();
       return result.response?.reply;
     }
 
@@ -121,14 +128,55 @@ const sendMessage = async (question, mode, userId) => {
   }
 };
 
+
+
+
+const deleteConversation = async (conversationId) => {
+  try {
+  const res =  await fetch(`/api/chat/deleteChat`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ conversationId }),
+    });
+
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message);
+
+    // console.log(data)
+
+
+    mutateConversations(
+      current => ({
+        ...current,
+        conversations: current.conversations.filter(
+          (conversation) => conversation._id !== conversationId
+        ),
+      }),
+      false
+    )
+
+    mutateConversations();
+    return true;
+  } catch (err) {
+    console.error("deleteConversation error:", err);
+    return false;
+  }
+};
+
+
+
   // expose SWR mutate in case UI wants manual refreshs
   const mutateChat = () => mutate(`/api/chat/${conversationId}`);
 
   return {
     messages,
+    conversations,
     sendMessage,
     mutateChat,
+    convLoading :convLoading,
     loadingHistory: isLoading,
-    error,
+    errorMessages: { chatError:error, convError:convError },
+    refreshConversations:mutateConversations,
+    deleteConversation
   };
 };
