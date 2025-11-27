@@ -1,0 +1,53 @@
+.glitch {
+  position: relative;
+  color: #fff;
+  font-weight: 900;
+  animation: flicker 1s infinite steps(1);
+  text-transform: uppercase;
+}
+
+.glitch:before,
+.glitch:after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: transparent;
+  clip-path: inset(0 0);
+}
+
+.glitch:before {
+  left: 2px;
+  text-shadow: -3px 0 #00e6ff;
+  animation: glitch-1 2s infinite linear alternate-reverse;
+}
+
+.glitch:after {
+  left: -2px;
+  text-shadow: -3px 0 #ff0066;
+  animation: glitch-2 1.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-1 {
+  0% { clip-path: inset(80% 0 0 0); }
+  20% { clip-path: inset(20% 0 45% 0); }
+  40% { clip-path: inset(40% 0 10% 0); }
+  60% { clip-path: inset(10% 0 60% 0); }
+  80% { clip-path: inset(50% 0 30% 0); }
+  100% { clip-path: inset(80% 0 0 0); }
+}
+
+@keyframes glitch-2 {
+  0% { clip-path: inset(0 0 80% 0); }
+  20% { clip-path: inset(30% 0 40% 0); }
+  40% { clip-path: inset(10% 0 60% 0); }
+  60% { clip-path: inset(50% 0 10% 0); }
+  80% { clip-path: inset(40% 0 20% 0); }
+  100% { clip-path: inset(0 0 80% 0); }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.95; }
+}
