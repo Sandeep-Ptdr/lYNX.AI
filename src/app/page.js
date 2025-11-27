@@ -9,7 +9,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push("/chat/new");
-    }, 5000); // 5 seconds redirect
+    }, 2000); // 2seconds redirect
 
     return () => clearTimeout(timer);
   }, [router]);
