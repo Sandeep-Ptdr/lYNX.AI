@@ -53,7 +53,7 @@ const Login = () => {
     });
 
     setLoading(true);
-    const res = await signIn("credentials", { redirect: false, ...user });
+    const res = await signIn("credentials", { redirect: false,callbackUrl: "/", ...user });
     setLoading(false);
 
     if (res?.error) {
