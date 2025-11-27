@@ -16,7 +16,7 @@ export function middleware(request) {
   
   // If user is logged in and tries to access login/register → redirect to home
   if (isPublic && token) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/chat/new", request.url));
   }
 
   // If user NOT logged in and tries to access protected route → redirect to login
