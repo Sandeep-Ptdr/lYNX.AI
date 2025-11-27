@@ -81,7 +81,7 @@ const Login = () => {
         id: toastId,
       });
 
-      router.push("/chat/new");
+      router.push("/");
     }
 
     // console.log('user credentials',res)
