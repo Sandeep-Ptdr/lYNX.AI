@@ -95,8 +95,8 @@ const SignUp = () => {
   return (
     <>
       
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
-        <Card className="w-md max-w-[500px] max-h-md h-max rounded">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full md:w-auto p-6 md:p-0 ">
+        <Card className=" w-auto  md:w-md md:max-w-[500px] max-h-md h-max rounded">
           <CardHeader>
             <CardTitle>Signup to your account</CardTitle>
             <CardDescription>
