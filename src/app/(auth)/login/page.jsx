@@ -81,7 +81,9 @@ const Login = () => {
         id: toastId,
       });
 
-      router.push("/");
+      setTimeout(() => {
+        router.push("/");
+      }, 500);
     }
 
     // console.log('user credentials',res)
