@@ -88,7 +88,7 @@ const ChatPage = ({ params }) => {
         {/* Greeting when no messages */}
         {messages.length === 0 && (
           <div className="w-full flex justify-center items-center h-full">
-            <div className="p-4 rounded-2xl text-center text-5xl max-w-3xl text-white opacity-80">
+            <div className="p-4 rounded-2xl text-center md:text-5xl text-2xl w-auto md:max-w-3xl text-white opacity-80">
               Hello! How can I help you today?
             </div>
           </div>
