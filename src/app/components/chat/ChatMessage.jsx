@@ -132,12 +132,12 @@ export default function ChatMessage({ role = "assistant", content = "" }) {
 // { console.log(normalized); }
   return (
     <div
-      className={`flex gap-2 mt-2 items-start ${
+      className={`flex gap-2 mt-2 items-start  ${
         role === "assistant" ? "" : "flex-row-reverse"
       }`}
     >
       {/* Avatar */}
-      <div>
+      <div className="md:flex hidden">
         <Avatar>
           <AvatarImage
             loading="lazy"
@@ -154,7 +154,7 @@ export default function ChatMessage({ role = "assistant", content = "" }) {
 
       {/* Message bubble - kept your classes intact */}
       <div
-        className={`max-w-[72%] w-fit rounded-2xl break-words overflow-x-auto scrollbar-hide  ${
+        className={`md:max-w-[72%] max-w-full w-fit rounded-2xl break-words overflow-x-auto scrollbar-hide  ${
           role === "user"
             ? "ml-auto bg-[#0F172B] text-white p-3"
             : "mr-auto bg-gradient-to-br from-gray-800/70 to-gray-700/60 text-gray-100 p-3"

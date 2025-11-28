@@ -82,7 +82,7 @@ const ChatPage = ({ params }) => {
   };
 
   return (
-    <div className="w-full mx-auto container lg:px-40 h-screen flex flex-col justify-between relative bg-[#020618] text-white">
+    <div className="w-full mx-auto container lg:px-40  h-screen flex flex-col justify-between relative bg-[#020618] text-white">
       <div className="flex-1 p-4 overflow-y-auto scrollbar-hide">
 
         {/* Greeting when no messages */}
@@ -121,8 +121,8 @@ const ChatPage = ({ params }) => {
       </div>
 
       {/* Input Box */}
-      <div className="w-full h-fit bg-[#2e2d2d] p-4 rounded-2xl mb-2 max-w-4xl mx-auto">
-        <div className="w-full flex gap-2 ">
+      <div className="w-full h-fit    mb-2 md:max-w-4xl mx-auto pr-4">
+        <div className="w-full flex gap-2 p-4  rounded-2xl  bg-[#0F172B] ">
           <ButtonGroupDemo />
           <textarea
             name="message"
@@ -132,7 +132,7 @@ const ChatPage = ({ params }) => {
             onKeyDown={handleKeyDown}
             value={messageInput.query}
             placeholder="Ask me anything..."
-            className="w-full outline-none p-2 resize-none bg-[#1c1b1b] text-white rounded-2xl scrollbar-hide"
+            className="w-full outline-none p-2 resize-none bg-[#0F172B] text-white rounded-2xl scrollbar-hide"
           />
           <button
             onClick={handleSend}
