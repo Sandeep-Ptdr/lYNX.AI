@@ -81,9 +81,7 @@ const Login = () => {
         id: toastId,
       });
 
-      setTimeout(() => {
-        router.push("/");
-      }, 500);
+     router.replace("/chat/new");
     }
 
     // console.log('user credentials',res)
