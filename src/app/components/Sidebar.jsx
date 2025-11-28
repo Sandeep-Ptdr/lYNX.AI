@@ -26,9 +26,38 @@ import LogoutBtn from "./LogoutBtn";
 import { useChatBot } from "@/hooks/useChat";
 import { usePathname, useRouter } from "next/navigation";
 
+import {
+  ArchiveIcon,
+  ArrowLeftIcon,
+  CalendarPlusIcon,
+  ClockIcon,
+  ListFilterPlusIcon,
+  MailCheckIcon,
+  MoreHorizontalIcon,
+  TagIcon,
+  Trash2Icon,
+} from "lucide-react";
+
+// import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import {
+  // DropdownMenu,
+  // DropdownMenuContent,
+  DropdownMenuGroup,
+  // DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  // DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import React from "react";
+
 export function AppSidebar() {
   const { data: session } = useSession();
-
+  const [label, setLabel] = React.useState("personal");
   const username = session?.user?.name || "User";
 
   const {
@@ -83,22 +112,35 @@ export function AppSidebar() {
             </Button>
             <SidebarMenu className="mt-4">
               <SidebarGroupLabel className="text-lg ">Chats</SidebarGroupLabel>
-              {conversations?.map((item, index ) => (
+              {conversations?.map((item, index) => (
                 <SidebarMenuItem key={index}>
-                  <SidebarMenuButton asChild className="rounded-[6px]  ">
-                    <div className="flex justify-between items-center">
-                      <a className="w-full" href={`/chat/${item?._id}`}>
-                        <span>{item.title}</span>
-                      </a>
-                      <button
-                        tooltip="Delete"
-                        className="cursor-pointer hidden group-hover/menu-item:inline-block transform hover:scale-110 transition-transform duration-200 ease-in-out"
-                        onClick={() => handleDelete(item?._id)}
-                      >
-                        <Trash2 size={17} />
-                      </button>
-                    </div>
-                  </SidebarMenuButton>
+                  <div className="px-2 py-1 rounded-[4px] hover:bg-accent hover:text-accent-foreground transition flex justify-between items-center">
+                    <a href={`/chat/${item?._id}`} className="w-full">
+                      {item.title}
+                    </a>
+
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          className="bg-transparent hover:bg-transparent cursor-pointer"
+                          variant="ghost"
+                          size="icon"
+                        >
+                          <MoreHorizontalIcon />
+                        </Button>
+                      </DropdownMenuTrigger>
+
+                      <DropdownMenuContent align="end" className="w-40">
+                        <DropdownMenuItem
+                          className="text-red-600 hover:text-red-700 cursor-pointer"
+                          onClick={() => handleDelete(item?._id)}
+                        >
+                          <Trash2Icon className="mr-2 h-4 w-4" />
+                          Delete Chat
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
