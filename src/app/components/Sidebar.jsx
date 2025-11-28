@@ -130,9 +130,9 @@ export function AppSidebar() {
                         </Button>
                       </DropdownMenuTrigger>
 
-                      <DropdownMenuContent align="end" className="w-40">
+                      <DropdownMenuContent align="end" className="w-40 rounded">
                         <DropdownMenuItem
-                          className="text-red-600 hover:text-red-700 cursor-pointer"
+                          className="text-red-600 hover:text-red-700 cursor-pointer rounded"
                           onClick={() => handleDelete(item?._id)}
                         >
                           <Trash2Icon className="mr-2 h-4 w-4" />
