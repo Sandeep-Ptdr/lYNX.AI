@@ -15,7 +15,7 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black">
+    <div className="flex items-center justify-center min-h-screen max-h-screen bg-black">
       <h1 className="glitch text-6xl sm:text-8xl font-bold text-white" data-text="LYNX">
         LYNX
       </h1>
