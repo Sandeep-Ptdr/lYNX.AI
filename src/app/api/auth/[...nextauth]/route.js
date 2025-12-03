@@ -55,8 +55,10 @@ export const authOptions = {
     },
 
     async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.name = token.name;
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+      }
 
       return session;
     },
@@ -65,8 +67,8 @@ export const authOptions = {
   pages: {
     signIn: "/login",
   },
+  secret: process.env.NEXTAUTH_SECRET || "secret",
 };
-
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
