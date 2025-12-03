@@ -1,4 +1,5 @@
 "use client";
+
 import { signIn, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import {
@@ -6,24 +7,33 @@ import {
   CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
+  const router = useRouter();
+  const { status } = useSession();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/chat/new");
+    }
+  }, [status, router]);
+
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+
   const onChange = (e) => {
     const { name, value } = e.target;
     setUser({
@@ -53,7 +63,10 @@ const Login = () => {
     });
 
     setLoading(true);
-    const res = await signIn("credentials", { redirect: false,callbackUrl: "/", ...user });
+    const res = await signIn("credentials", {
+      redirect: false,
+      ...user,
+    });
     setLoading(false);
 
     if (res?.error) {
@@ -65,32 +78,33 @@ const Login = () => {
           WebkitBackdropFilter: "blur(14px)",
           borderRadius: "12px",
           border: "1px solid rgba(255, 0, 0, 0.35)",
-          boxShadow: "0 0 25px rgba(255, 0, 0, 0.45)", // RED SHADOW
+          boxShadow: "0 0 25px rgba(255, 0, 0, 0.45)",
           color: "#E3ECFF",
           padding: "14px 18px",
         },
         iconTheme: {
-          primary: "#EF4444", // red icon
+          primary: "#EF4444",
           secondary: "rgba(12,18,40,0.9)",
         },
       });
       return;
     }
-    if (res.ok) {
-      toast.success("Login successful", {
-        id: toastId,
-      });
 
-     router.replace("/chat/new");
+    if (res?.ok) {
+      toast.success("Login successful", { id: toastId });
+
+      // Give time for token sync then redirect
+      setTimeout(() => {
+        router.refresh();
+        router.replace("/chat/new");
+      }, 200);
     }
-
-    // console.log('user credentials',res)
   };
 
   return (
     <>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full md:w-auto p-6 md:p-0">
-        <Card className="w-auto md:w-md md:max-w-[500px]  max-h-md h-max rounded">
+        <Card className="w-auto md:w-md md:max-w-[500px] max-h-md h-max rounded">
           <CardHeader>
             <CardTitle>Login to your account</CardTitle>
             <CardDescription>
@@ -134,8 +148,8 @@ const Login = () => {
                     name="password"
                     value={user.password}
                     type="password"
-                    required
                     className="rounded-[6px]"
+                    required
                   />
                 </div>
               </div>
@@ -144,14 +158,10 @@ const Login = () => {
                 disabled={loading}
                 className="w-full rounded-[6px] cursor-pointer mt-6"
               >
-                Login
+                {loading ? "Loading..." : "Login"}
               </Button>
             </form>
           </CardContent>
-
-          {/* <Button variant="outline" className="w-full">
-            Login with Google
-          </Button> */}
         </Card>
       </div>
     </>
