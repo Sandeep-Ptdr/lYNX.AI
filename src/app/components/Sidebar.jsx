@@ -32,7 +32,7 @@ import {
   CalendarPlusIcon,
   ClockIcon,
   ListFilterPlusIcon,
-  MailCheckIcon,
+  MailCheckIcon, 
   MoreHorizontalIcon,
   TagIcon,
   Trash2Icon,
