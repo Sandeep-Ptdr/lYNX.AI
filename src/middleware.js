@@ -35,14 +35,51 @@
 //   ],
 // };
 
-import { withAuth } from "next-auth/middleware";
+// import { withAuth } from "next-auth/middleware";
 
-export default withAuth({
-  pages: {
-    signIn: "/login",
-  },
-});
+// export default withAuth({
+//   pages: {
+//     signIn: "/login",
+//   },
+// });
+
+// export const config = {
+//   matcher: ["/chat/new", "/chat/:path*"],
+// };
+
+
+
+
+
+
+
+
+import { getToken } from "next-auth/jwt";
+import { NextResponse } from "next/server";
+
+const authRoutes = ["/login", "/register"]; // Public pages
+
+export async function middleware(req) {
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const { pathname } = req.nextUrl;
+
+  const isAuthRoute = authRoutes.includes(pathname);
+
+  // If logged in and trying to access login/register → go to chat
+  if (token && isAuthRoute) {
+    return NextResponse.redirect(new URL("/chat/new", req.url));
+  }
+
+  // If NOT logged in and accessing protected route → go to login
+  if (!token && !isAuthRoute) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
+
+  return NextResponse.next();
+}
 
 export const config = {
-  matcher: ["/chat/new", "/chat/:path*"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico).*)", // Protect everything except public assets
+  ],
 };

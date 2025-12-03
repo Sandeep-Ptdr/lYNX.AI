@@ -19,14 +19,7 @@ import { useRouter } from "next/navigation";
 
 const Login = () => {
   const router = useRouter();
-  const { status } = useSession();
-
-  // Redirect if already logged in
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.replace("/chat/new");
-    }
-  }, [status, router]);
+  
 
   const [user, setUser] = useState({
     email: "",
