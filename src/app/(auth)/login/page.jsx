@@ -88,10 +88,11 @@ const Login = () => {
 
       // Give time for token sync then redirect
       setTimeout(() => {
-        console.log('entered')
+         
         router.refresh();
         router.push("/chat/new");
-        console.log('after push')
+       window.location.reload();
+        
       }, 200);
     }
   };
