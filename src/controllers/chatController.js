@@ -141,30 +141,30 @@ import Conversation from "@/app/api/models/conversation";
 import Message from "@/app/api/models/message";
 import { GetBotPersonality, getTemperature } from "@/app/api/chat/botModes/botModesUtils";
 import { connectDb } from "@/lib/connectDb";
+import { vectorStore } from "@/lib/rag/vectorStore";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 const tvly = new tavily({ apiKey: process.env.TAVILY_API_KEY });
 const MODEL = "openai/gpt-oss-20b";
-
-/**
- * chatWithBot
- * @param {string} question - user message text
- * @param {string|null} conversationId - existing conversation id or null
- * @param {string} mode - bot mode/personality key
- * @param {string|null} userId - optional user id (ObjectId string) to attach to conversation
- * @returns {Object} { conversationId, reply } or { error }
- */
+ 
 export async function chatWithBot(question, conversationId = null, mode = "default", userId = null) {
  
   try {
-console.log('conver',conversationId)
+
+// console.log('conver',conversationId)
+
+
+
     await connectDb();
 
-    // 1. Persona + temperature
+
+  // const relavantInfo = await vectorStore.similaritySearch(question, 3);
+   
+     
     const persona = await GetBotPersonality(mode);
     const temperature = getTemperature(mode);
 
-    // 2. Ensure conversation exists
+    // Ensure conversation exists
     let conv = null;
     if (!conversationId) {
       conv = await Conversation.create({
@@ -184,7 +184,7 @@ console.log('conver',conversationId)
       }
     }
 
-    // 3. Persist user message into DB (role matches your schema enum)
+    // Persist user message into DB (role matches your schema enum)
     const userMessage = await Message.create({
       conversationId,
       role: "user",
@@ -195,7 +195,7 @@ console.log('conver',conversationId)
     // update conversation updatedAt
     await Conversation.findByIdAndUpdate(conversationId, { updatedAt: new Date() });
 
-    // 4. Load recent messages to use as "memory"
+    // Load recent messages to use as "memory"
     //    We fetch the most recent N messages and then reverse them to chronological order.
     const N = 25;
     let recent = await Message.find({ conversationId })
@@ -205,7 +205,7 @@ console.log('conver',conversationId)
 
     recent = recent.reverse(); // chronological: oldest -> newest
 
-    // 5. Build chat history array for the model.
+    //  Build chat history array for the model.
     //    Use the stored `role` directly: "system" | "user" | "assistant"
     const chatHistory = [
       { role: "system", content: persona },
@@ -215,7 +215,10 @@ console.log('conver',conversationId)
       })),
     ];
 
-    // 6. Tools (function-calling) definition — same as before
+
+
+
+    // Tools (function-calling) definition — same as before
     const tools = [
       {
         type: "function",
@@ -233,7 +236,9 @@ console.log('conver',conversationId)
       },
     ];
 
-    // 7. Call model (single attempt — you can wrap with retry logic if desired)
+    
+
+    //Call model (single attempt — you can wrap with retry logic if desired)
     const completion = await groq.chat.completions.create({
       model: MODEL,
       temperature,
@@ -256,7 +261,7 @@ console.log('conver',conversationId)
       await Conversation.findByIdAndUpdate(conversationId, { updatedAt: new Date() });
     }
 
-    // 8. If model requested a tool call (webSearch)
+    //If model requested a tool call (webSearch)
     if (toolCalls && toolCalls.length > 0) {
       // we store the model's tool_call message first (as assistant message with metadata)
       await Message.create({
@@ -311,7 +316,7 @@ console.log('conver',conversationId)
       return { conversationId, reply: final };
     }
 
-    // 9. No tool calls — use model reply directly
+   //If model didn't request a tool call
     const finalReply = choiceMsg?.content ?? "Sorry, I couldn't generate a response.";
     await persistAssistantMessage(finalReply, {});
 
@@ -322,11 +327,7 @@ console.log('conver',conversationId)
   }
 }
 
-/**
- * webSearch - uses Tavily to search and returns joined text
- * @param {{query: string}} param0
- * @returns {string}
- */
+ 
 async function webSearch({ query }) {
   if (!query) return "No query provided";
   try {
