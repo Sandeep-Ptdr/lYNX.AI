@@ -169,7 +169,7 @@ import { Send, Mic, MicOff, Volume2, Square } from "lucide-react";
 import React, { useState, useEffect, useRef, use } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useChatBot } from "@/hooks/useChat";
-import { ButtonGroupDemo } from "../../../components/GroupBtn";
+// import { ButtonGroupDemo } from "../../../components/GroupBtn";
 import { useMode } from "@/context/modeContext";
 import ChatMessage from "../../../components/chat/ChatMessage";
 import { useSession } from "next-auth/react";
@@ -178,7 +178,8 @@ import { useSession } from "next-auth/react";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useSpeechInput } from "@/hooks/useSpeechInput";
 import GreetingMessage from "@/app/components/GreetingMsgs";
-
+import { Button } from "@/components/ui/moving-border";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 const ChatPage = ({ params }) => {
   const { mode } = useMode();
   const resolvedChatId = use(params);
@@ -278,14 +279,43 @@ const ChatPage = ({ params }) => {
     }
   };
 
+  const prompts = [
+    "Hey there! 👋 What’s your name?",
+    // "Let’s get colorful 🎨—what’s your favorite color?",
+    // "Quick quiz 🧠: do you know the capital of France?",
+    // "Space time! 🚀 Which planet is the biggest in our solar system?",
+    "Who are you?",
+    // "If you could have any superpower, what would it be? 🦸",
+    "Coffee or tea? ☕🍵 Pick your potion!",
+    // "What’s a song you can’t stop listening to right now? 🎵",
+    // "Beach or mountains? 🏖️🏔️ Which one’s your vibe?",
+    "Tell me one fun fact about yourself! 😄",
+  ];
+
   return (
     <div className="w-full mx-auto container lg:px-40 h-screen flex flex-col justify-between relative bg-[#020618] text-white">
       <div className="flex-1 p-4 overflow-y-auto scrollbar-hide">
         {/* show greeting when there are no messages */}
         {messages.length === 0 && (
           <div className="w-full flex justify-center items-center h-full">
-            <div className="p-4 rounded-2xl text-center md:text-3xl text-2xl w-auto md:max-w-3xl text-gray-200 opacity-80">
-              <GreetingMessage />
+            <div className="w-full flex flex-col justify-center items-center h-full">
+              <div className="p-4 rounded-2xl text-center md:text-3xl text-2xl w-auto md:max-w-3xl text-gray-200 opacity-80">
+                <GreetingMessage />
+              </div>
+              <div className="flex justify-center max-w-full flex-wrap gap-3 mt-3">
+                {prompts.map((prompt, index) => (
+                  <Button
+                  containerClassName="w-auto"
+                  className='px-4'
+                    onClick={() =>
+                      setMessageInput({ role: "user", query: prompt })
+                    }
+                    key={index}
+                  >
+                    {prompt}
+                  </Button>
+                ))}
+              </div>
             </div>
           </div>
         )}
@@ -408,7 +438,9 @@ const ChatPage = ({ params }) => {
           </button>
         </div>
       </div>
+     
     </div>
+    
   );
 };
 
