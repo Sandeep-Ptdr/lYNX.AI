@@ -305,8 +305,8 @@ const ChatPage = ({ params }) => {
               <div className="flex justify-center max-w-full flex-wrap gap-3 mt-3">
                 {prompts.map((prompt, index) => (
                   <Button
-                  containerClassName="w-auto"
-                  className='px-4'
+                    containerClassName="w-auto"
+                    className="px-4"
                     onClick={() =>
                       setMessageInput({ role: "user", query: prompt })
                     }
@@ -438,9 +438,7 @@ const ChatPage = ({ params }) => {
           </button>
         </div>
       </div>
-     
     </div>
-    
   );
 };
 
