@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "LYNX-Your AI Assistant",
+  title: "LYNX-AI Assistant",
   description: "Created & ❤️ by Developers",
 };
 

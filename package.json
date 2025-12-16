@@ -43,6 +43,7 @@
     "rehype-highlight": "^7.0.2",
     "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.1",
+    "simplex-noise": "^4.0.3",
     "swr": "^2.3.6",
     "tailwind-merge": "^3.3.1"
   },
