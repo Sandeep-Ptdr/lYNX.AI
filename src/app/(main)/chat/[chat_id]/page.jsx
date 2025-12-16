@@ -179,7 +179,7 @@ import { useSpeech } from "@/hooks/useSpeech";
 import { useSpeechInput } from "@/hooks/useSpeechInput";
 import GreetingMessage from "@/app/components/GreetingMsgs";
 import { Button } from "@/components/ui/moving-border";
-import { BackgroundBeams } from "@/components/ui/background-beams";
+ 
 const ChatPage = ({ params }) => {
   const { mode } = useMode();
   const resolvedChatId = use(params);
@@ -295,6 +295,7 @@ const ChatPage = ({ params }) => {
   return (
     <div className="w-full mx-auto container lg:px-40 h-screen flex flex-col justify-between relative bg-[#020618] text-white">
       <div className="flex-1 p-4 overflow-y-auto scrollbar-hide">
+       
         {/* show greeting when there are no messages */}
         {messages.length === 0 && (
           <div className="w-full flex justify-center items-center h-full">
